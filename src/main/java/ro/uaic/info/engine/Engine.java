@@ -1,13 +1,14 @@
 package ro.uaic.info.engine;
 
 import ro.uaic.info.engine.exception.EngineExceptionUninitialized;
+import ro.uaic.info.game.entity.GameObjects;
 
 public class Engine {
     private static Engine instance;
 
     /**
      * debugLevel 1 = critic only
-     * debugLevel 2 = important + critic
+     * debugLevel 2 = important + critical
      * debugLevel 3 = anything.
      */
     private int debugLevel = 0;
@@ -23,6 +24,8 @@ public class Engine {
 
     private int targetFPS = DEFAULT_FPS_TARGET;
 
+    private GameObjects gameObjects;
+
     private boolean initialized = false;
 
     public Engine setDebugLevel(int debugLevel){
@@ -37,10 +40,19 @@ public class Engine {
     }
 
     private Engine(){
-
     }
 
+    public GameObjects getGameObjects() {
+        return this.gameObjects;
+    }
+
+    /**
+     * Call to initialise engine components. Call if initAtRuntime = false
+     * @return
+     */
     private Engine initialiseEngine(){
+
+        this.gameObjects = new GameObjects();
 
         this.initialized = true;
         return this;
@@ -48,12 +60,20 @@ public class Engine {
 
     /**
      * Will call ALL objects in engine that need updating every frame
-     * @return
      */
     private void update(){
 
     }
 
+    public void stopEngine(){
+        this.isActive = false;
+    }
+
+    /**
+     * Call after initialized or toggle initAtRuntime, more overhead if so.
+     * @param initAtRuntime true to init at runtime, false to init before
+     * @throws EngineExceptionUninitialized if uninitialized, will throw
+     */
     public synchronized void run(boolean initAtRuntime) throws EngineExceptionUninitialized {
         if(initAtRuntime)
             this.initialiseEngine();
