@@ -50,7 +50,12 @@ public class Engine {
      * Call to initialise engine components. Call if initAtRuntime = false
      * @return
      */
-    private Engine initialiseEngine(){
+    public Engine initialiseEngine(){
+        if(this.initialized)
+            return this;
+
+        if(this.isActive)
+            return this;
 
         this.gameObjects = new GameObjects();
 

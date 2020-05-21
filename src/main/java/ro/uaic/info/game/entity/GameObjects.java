@@ -4,15 +4,17 @@ import ro.uaic.info.game.objects.player.Player;
 import ro.uaic.info.game.objects.ship.Ship;
 import ro.uaic.info.game.objects.weapon.Gun;
 
-public class GameObjects {
-    private Player player;
-    private Gun gun;
-    private Ship ship;
+import java.util.ArrayList;
+import java.util.List;
 
-    public GameObjects(Player player, Gun gun, Ship ship) {
-        this.player = player;
-        this.gun = gun;
-        this.ship = ship;
+public class GameObjects {
+    private Player playerObject;
+    private List<Gun> gunAssets;
+    private List<Ship> shipAssets;
+
+    public GameObjects() {
+        this.gunAssets = new ArrayList<>();
+        this.shipAssets = new ArrayList<>();
     }
 
     public void update() {
@@ -20,14 +22,14 @@ public class GameObjects {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.playerObject;
     }
 
-    public Gun getGun() {
-        return gun;
+    public List<Gun> getGun() {
+        return this.gunAssets;
     }
 
-    public Ship getShip() {
-        return ship;
+    public List<Ship> getShip() {
+        return this.shipAssets;
     }
 }
