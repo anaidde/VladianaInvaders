@@ -1,7 +1,13 @@
 package ro.uaic.info.engine;
 
+import ro.uaic.info.engine.exception.EngineExceptionNoWindow;
 import ro.uaic.info.engine.exception.EngineExceptionUninitialized;
 import ro.uaic.info.game.entity.GameObjects;
+import ro.uaic.info.game.window.GameWindow;
+
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 public class Engine {
     private static Engine instance;
@@ -25,6 +31,7 @@ public class Engine {
     private int targetFPS = DEFAULT_FPS_TARGET;
 
     private GameObjects gameObjects;
+    private GameWindow window;
 
     private boolean initialized = false;
 
@@ -67,11 +74,39 @@ public class Engine {
      * Will call ALL objects in engine that need updating every frame
      */
     private void update(){
+        /*
+            TODO : Update ALL game rules here (objects etc. )
+         */
 
+        this.redraw();
+    }
+
+    private void redraw(){
+        BufferStrategy strategy = this.window.getCanvas().getBufferStrategy();
+
+        if(strategy == null){
+            this.window.getCanvas().createBufferStrategy(3);
+            strategy = this.window.getCanvas().getBufferStrategy();
+        }
+
+        Graphics graphics = strategy.getDrawGraphics();
+        graphics.clearRect(0,0, this.window.getWidth(), this.window.getHeight());
+
+        /*
+         *  TODO : REDRAW ALL OBJECTS HERE
+         */
+
+        strategy.show();
+        graphics.dispose();
     }
 
     public void stopEngine(){
         this.isActive = false;
+    }
+
+    public Engine setGameWindow(GameWindow window) {
+        this.window = window;
+        return this;
     }
 
     /**
@@ -79,12 +114,15 @@ public class Engine {
      * @param initAtRuntime true to init at runtime, false to init before
      * @throws EngineExceptionUninitialized if uninitialized, will throw
      */
-    public synchronized void run(boolean initAtRuntime) throws EngineExceptionUninitialized {
+    public synchronized void run(boolean initAtRuntime) throws EngineExceptionUninitialized, EngineExceptionNoWindow {
         if(initAtRuntime)
             this.initialiseEngine();
 
         if(!initialized)
             throw new EngineExceptionUninitialized();
+
+        if(this.window == null)
+            throw new EngineExceptionNoWindow();
 
         this.isActive = true;
 

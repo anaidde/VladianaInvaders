@@ -1,6 +1,7 @@
 package ro.uaic.info.game.window;
 
 import ro.uaic.info.engine.Engine;
+import ro.uaic.info.engine.exception.EngineExceptionNoWindow;
 import ro.uaic.info.engine.exception.EngineExceptionUninitialized;
 
 import javax.swing.*;
@@ -17,6 +18,10 @@ public class GameWindow extends JFrame {
     private Point topLeftCorner;
     private Dimension windowSize;
     private Canvas canvas;
+
+    public Canvas getCanvas() {
+        return this.canvas;
+    }
 
     public static class GameWindowBuilder{
         private Point topLeftCorner = new Point(DEFAULT_X_OFFSET,DEFAULT_Y_OFFSET);
@@ -56,21 +61,20 @@ public class GameWindow extends JFrame {
     public GameWindow initialize(){
         this.engine.initialiseEngine(); /// will return if already initialized
 
-        this.buildWindow();
-        this.buildComponents();
-
-        return this;
+        return this.buildWindow().buildComponents();
     }
 
-    private void buildWindow(){
+    private GameWindow buildWindow(){
         this.setLocation(this.topLeftCorner);
         this.setSize(this.windowSize);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+        return this;
     }
 
-    private void buildComponents(){
+    private GameWindow buildComponents(){
         this.canvas = new Canvas();
         this.canvas.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
         this.canvas.setMaximumSize(new Dimension(this.getWidth(), this.getHeight()));
@@ -78,14 +82,21 @@ public class GameWindow extends JFrame {
         this.canvas.setFocusable(false);
 
         this.canvas.createBufferStrategy(3); ///Triple Buffering : 3 imagini sunt pre-loaded in GPU pt smooth rendering si swap intre imagini
+
+        return this;
     }
 
-    public GameWindow run(){
+    public GameWindow run(boolean init){
+
+        if(init)
+            this.initialize();
 
         try {
-            this.engine.run(false);
+            this.engine.setGameWindow(this).run(false);
         } catch ( EngineExceptionUninitialized exceptionUninitialized ){
             System.out.println(exceptionUninitialized + ". Init Engine!");
+        } catch ( EngineExceptionNoWindow exceptionNoWindow ){
+            System.out.println(exceptionNoWindow.toString());
         }
 
         return this;
