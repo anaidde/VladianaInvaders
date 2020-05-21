@@ -74,6 +74,17 @@ class ChainGunFiringPattern{
 
 }
 
+class PlayerInputListener{
+    boolean pressedUp();
+    boolean pressedDown();
+    boolean pressedLeft();
+    boolean pressedRight();
+
+    diverseAlteFunctii(); ...
+}
+
+Engine "1" *.. "1" PlayerInputListener
+
 FiringPattern ^-- LinearFiringPattern
 FiringPattern ^-- ScatterShotFiringPattern
 FiringPattern ^-- ChainGunFiringPattern
