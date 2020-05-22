@@ -28,6 +28,7 @@ public class GameWindow extends JFrame {
         private Point topLeftCorner = new Point(DEFAULT_X_OFFSET,DEFAULT_Y_OFFSET);
         private Dimension gameWindowDimension = new Dimension(DEFAULT_GAME_WINDOW_WIDTH, DEFAULT_GAME_WINDOW_HEIGHT);
         private boolean initEng = false;
+        private Debug.DebugLevel debugLevel = Debug.DebugLevel.DEBUG_LEVEL_NONE;
 
         public GameWindowBuilder withPosition(Point position){
             this.topLeftCorner = position;
@@ -36,6 +37,11 @@ public class GameWindow extends JFrame {
 
         public GameWindowBuilder withSize(Dimension dimension){
             this.gameWindowDimension = dimension;
+            return this;
+        }
+
+        public GameWindowBuilder withDebugLevel(Debug.DebugLevel level){
+            this.debugLevel = level;
             return this;
         }
 
@@ -61,7 +67,7 @@ public class GameWindow extends JFrame {
 
             gameWindow.engine = Engine
                     .getInstance()
-                    .setDebugLevel(Debug.DebugLevel.DEBUG_LEVEL_NONE);
+                    .setDebugLevel(this.debugLevel);
             if(this.initEng)
                 gameWindow.engine.initialiseEngine();
 
@@ -82,6 +88,8 @@ public class GameWindow extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         return this;
     }
 
@@ -92,6 +100,8 @@ public class GameWindow extends JFrame {
         this.canvas.setMinimumSize(new Dimension(this.getWidth(), this.getHeight()));
         this.canvas.setFocusable(false);
 
+        this.add(this.canvas);
+
         this.canvas.createBufferStrategy(3); ///Triple Buffering : 3 imagini sunt pre-loaded in GPU pt smooth rendering si swap intre imagini
 
         return this;
@@ -101,6 +111,8 @@ public class GameWindow extends JFrame {
 
         if(init)
             this.initialize();
+
+        this.engine.debug("Canvas Init Test : " + this.canvas.toString(), Debug.DebugLevel.DEBUG_LEVEL_CRITICAL);
 
         try {
             this.engine.setGameWindow(this).run(false);
