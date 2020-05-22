@@ -1,5 +1,6 @@
 package ro.uaic.info.game.window;
 
+import ro.uaic.info.engine.Debug;
 import ro.uaic.info.engine.Engine;
 import ro.uaic.info.engine.exception.EngineExceptionNoWindow;
 import ro.uaic.info.engine.exception.EngineExceptionUninitialized;
@@ -38,8 +39,18 @@ public class GameWindow extends JFrame {
             return this;
         }
 
-        public GameWindowBuilder initializeEngine(boolean toggle){
-            this.initEng = toggle;
+        public GameWindowBuilder withPosition(int x, int y){
+            this.topLeftCorner = new Point(x, y);
+            return this;
+        }
+
+        public GameWindowBuilder withSize(int width, int height){
+            this.gameWindowDimension = new Dimension(width, height);
+            return this;
+        }
+
+        public GameWindowBuilder initializeEngine(){
+            this.initEng = true;
             return this;
         }
 
@@ -50,7 +61,7 @@ public class GameWindow extends JFrame {
 
             gameWindow.engine = Engine
                     .getInstance()
-                    .setDebugLevel(Engine.DEBUG_LEVEL_NONE);
+                    .setDebugLevel(Debug.DebugLevel.DEBUG_LEVEL_NONE);
             if(this.initEng)
                 gameWindow.engine.initialiseEngine();
 

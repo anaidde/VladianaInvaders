@@ -12,21 +12,11 @@ import java.awt.image.BufferedImage;
 public class Engine {
     private static Engine instance;
 
-    /**
-     * debugLevel 1 = critic only
-     * debugLevel 2 = important + critical
-     * debugLevel 3 = anything.
-     */
-    private int debugLevel = 0;
-
     private boolean isActive = false;
 
     public static int DEFAULT_FPS_TARGET = 60;
 
-    public static final int DEBUG_LEVEL_NONE = 0;
-    public static final int DEBUG_LEVEL_CRITICAL = 1;
-    public static final int DEBUG_LEVEL_IMPORTANT = 2;
-    public static final int DEBUG_LEVEL_ALL_MESSAGES = 20;
+    private Debug debugHandler;
 
     private int targetFPS = DEFAULT_FPS_TARGET;
 
@@ -35,8 +25,8 @@ public class Engine {
 
     private boolean initialized = false;
 
-    public Engine setDebugLevel(int debugLevel){
-        this.debugLevel = debugLevel;
+    public Engine setDebugLevel(Debug.DebugLevel debugLevel){
+        this.debugHandler.setDebugLevel(debugLevel);
         return this;
     }
 
@@ -47,6 +37,7 @@ public class Engine {
     }
 
     private Engine(){
+        this.debugHandler = new Debug();
     }
 
     public GameObjects getGameObjects() {
@@ -115,13 +106,13 @@ public class Engine {
      * @throws EngineExceptionUninitialized if uninitialized, will throw
      */
     public synchronized void run(boolean initAtRuntime) throws EngineExceptionUninitialized, EngineExceptionNoWindow {
-        if(initAtRuntime)
+        if (initAtRuntime)
             this.initialiseEngine();
 
-        if(!initialized)
+        if (!initialized)
             throw new EngineExceptionUninitialized();
 
-        if(this.window == null)
+        if (this.window == null)
             throw new EngineExceptionNoWindow();
 
         this.isActive = true;
@@ -132,7 +123,9 @@ public class Engine {
         int updateTime;
         int sleepTimer = (1000 / this.targetFPS); // 1000ms / frames per Second = one frame's duration
 
-        while(this.isActive){
+        while (this.isActive) {
+            this.debug("Frame Start", Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
+
             startFrameTime = System.nanoTime();
 
             this.update();
@@ -141,13 +134,36 @@ public class Engine {
 
             updateTime = (int) ((endFrameTime - startFrameTime) / 1000000);
 
-            try{
-                if(sleepTimer >= updateTime)
+            try {
+                if (sleepTimer >= updateTime)
                     Thread.sleep(sleepTimer - updateTime);
-            } catch (InterruptedException ignored){
+            } catch (InterruptedException ignored) {
 
             }
         }
     }
 
+    /**
+     * Debug Functions Below.
+     */
+
+    public Engine debug(String message, Debug.DebugLevel level){
+        this.debugHandler.printMessage(message, level, false, "ENGINE");
+        return this;
+    }
+
+    public Engine forceDebug(String message, Debug.DebugLevel level){
+        this.debugHandler.printMessage(message, level, true, "ENGINE");
+        return this;
+    }
+
+    public Engine debug(String message, Debug.DebugLevel level, String context){
+        this.debugHandler.printMessage(message, level, false, context);
+        return this;
+    }
+
+    public Engine forceDebug(String message, Debug.DebugLevel level, String context){
+        this.debugHandler.printMessage(message, level, true, context);
+        return this;
+    }
 }
