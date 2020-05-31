@@ -83,25 +83,25 @@ class PlayerInputListener{
     diverseAlteFunctii(); ...
 }
 
-Engine "1" *.. "1" PlayerInputListener
+Engine "1" *-- "1" PlayerInputListener
 
 FiringPattern ^-- LinearFiringPattern
 FiringPattern ^-- ScatterShotFiringPattern
 FiringPattern ^-- ChainGunFiringPattern
-FiringPattern "1" *.. "1.." Projectile
+FiringPattern "1" *-- "1.." Projectile
 
-Engine "1" *.. "1" GameObjects
+Engine "1" *-- "1" GameObjects
 
-GameObjects "1" o.. "1.." Projectile
-GameObjects "1" *.. "1.." FiringPattern
-GameObjects "1" *.. "1.." Gun
-GameObjects "1" *.. "1.." Player
-GameObjects "1" *.. "1.." Ship
+GameObjects "1" o-- "1.." Projectile
+GameObjects "1" *-- "1.." FiringPattern
+GameObjects "1" *-- "1.." Gun
+GameObjects "1" *-- "1.." Player
+GameObjects "1" *-- "1.." Ship
 
-Gun "1" o.. "1" FiringPattern
+Gun "1" o-- "1" FiringPattern
 
-Player "1" o.. "1" Ship
-Player "1" o.. "1" Gun
+Player "1" o-- "1" Ship
+Player "1" o-- "1" Gun
 
 ProjectileType . Projectile
 

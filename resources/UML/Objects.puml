@@ -1,0 +1,191 @@
+@startuml
+
+package engine{
+    class Engine{
+       static Engine instance : private
+
+       Debug debugHandler : private
+
+       GameObjects gameObjects : private
+       GameWindow window : private
+
+       int targetFPS : private
+
+       boolean initialized : private
+
+       void update() : private
+       void redraw() : private
+       void initialiseEngine() : private
+       synchronized void run() throws EngineExceptionUninitialized | EngineExceptionNoWindow : public
+       void stopEngine() : public
+
+       Engine debug(String, DebugLevel) : public
+       Engine forceDebug(String) : public
+
+       static Engine getInstance() : public
+   }
+
+    class Debug{
+        debugLevel debugLevel : private
+
+        void printMessage(String) : public
+    }
+
+    enum DebugLevel{
+        DEBUG_LEVEL_NONE,
+        DEBUG_LEVEL_CRITICAL,
+        DEBUG_LEVEL_IMPORTANT,
+        DEBUG_LEVEL_ALL_MESSAGES
+    }
+
+    Debug .. DebugLevel
+    Engine *-- Debug
+
+    package exception{
+        abstract class Exception
+        class EngineExceptionNoWindow extends Exception
+        class EngineExceptionUninitialized extends Exception
+
+        Engine "throws" *-- EngineExceptionUninitialized
+        Engine "throws" *-- EngineExceptionNoWindow
+    }
+}
+
+package game{
+    package entity{
+        class GameObjects{
+            Player : private
+            Gun gameGuns : private
+            PlayerShip gameShips : private
+
+            void update() : private
+        }
+    }
+
+    package objects{
+        package player{
+            class Player{
+                Ship playerShip : private
+                Rectangle mesh : private
+                Point coordinates : private
+                Rectangle dimension : private
+
+                void update() : public
+                void draw(Graphics) : public
+            }
+
+            class PlayerInputListener{
+                boolean pressedUp();
+                boolean pressedDown();
+                boolean pressedLeft();
+                boolean pressedRight();
+            }
+        }
+
+        package projectile{
+            class Projectile{
+                ProjectileType : private
+                Rectangle mesh : private
+                Point coordinates : private
+                Rectangle dimension : private
+
+                void update() : public
+                void draw(Graphics) : public
+            }
+
+            enum ProjectileType{
+                /*
+                    TBD
+                */
+            }
+        }
+
+        package ship{
+            class Ship{
+                health : private
+                sprite : private
+                Rectangle spriteDimension : private
+            }
+        }
+
+        package weapon{
+            interface FiringPattern{
+                Projectile fireNextProjectile() : public
+            }
+
+
+            class Gun{
+                ProjectileType : private
+                FiringPattern : private
+            }
+
+            class LinearFiringPattern{
+
+            }
+
+            class ScatterShotFiringPattern{
+
+            }
+
+            class ChainGunFiringPattern{
+
+            }
+        }
+    }
+
+    package window{
+        class GameWindow{
+            Engine engine : private
+
+            Point topLeftCorner : private
+            Dimension windowSize : private
+            Canvas canvas : private
+
+            GameWindow initialize() : public
+            GameWindow buildWindow() : public
+            GameWindow buildComponents() : public
+
+            GameWindow run(boolean) : public
+        }
+
+        class GameWindowBuilder{
+            GameWindowBuilder withPosition(Point) : public
+            GameWindowBuilder withSize(Dimension) : public
+            GameWindowBuilder withDebugLevel(DebugLevel) : public
+            GameWindowBuilder withPosition(int, int) : public
+            GameWindowBuilder withSize(int, int) : public
+            GameWindowBuilder initializeEngine() : public
+            GameWindow build() : public
+        }
+
+        GameWindow .. GameWindowBuilder
+
+        GameWindow "1" o-- "1" Engine
+
+    }
+}
+
+
+Engine "1" *-- "1" PlayerInputListener
+
+FiringPattern ^-- LinearFiringPattern
+FiringPattern ^-- ScatterShotFiringPattern
+FiringPattern ^-- ChainGunFiringPattern
+FiringPattern "1" *-- "1.." Projectile
+
+Engine "1" *-- "1" GameObjects
+
+GameObjects "1" o-- "1.." Projectile
+GameObjects "1" *-- "1.." FiringPattern
+GameObjects "1" *-- "1.." Gun
+GameObjects "1" *-- "1.." Player
+GameObjects "1" *-- "1.." Ship
+
+Gun "1" o-- "1" FiringPattern
+
+Player "1" o-- "1" Ship
+Player "1" o-- "1" Gun
+
+ProjectileType . Projectile
+
+@enduml
