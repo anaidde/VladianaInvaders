@@ -1,6 +1,4 @@
-package ro.uaic.info.game.objects.projectile;
-
-import ro.uaic.info.game.objects.projectile.ProjectileType;
+package ro.uaic.info.game.objects.weapon.projectile;
 
 import java.awt.*;
 

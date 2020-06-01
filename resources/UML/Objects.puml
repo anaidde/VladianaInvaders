@@ -82,28 +82,10 @@ package game{
             }
         }
 
-        package projectile{
-            class Projectile{
-                ProjectileType : private
-                Rectangle mesh : private
-                Point coordinates : private
-                Rectangle dimension : private
-
-                void update() : public
-                void draw(Graphics) : public
-            }
-
-            enum ProjectileType{
-                /*
-                    TBD
-                */
-            }
-        }
-
         package ship{
-            class Ship{
-                health : private
-                sprite : private
+            class SpaceShip {
+                Double health : private
+                BufferedImage sprite : private
                 Rectangle spriteDimension : private
             }
         }
@@ -129,6 +111,92 @@ package game{
 
             class ChainGunFiringPattern{
 
+            }
+
+            package projectile{
+                class Projectile{
+                    ProjectileType : private
+                    Rectangle mesh : private
+                    Point coordinates : private
+                    Rectangle dimension : private
+
+                    void update() : public
+                    void draw(Graphics) : public
+                }
+
+                enum ProjectileType{
+                    /*
+                        TBD
+                    */
+                }
+            }
+        }
+
+        package enemy{
+            interface Enemy{
+                void update() : public
+                void draw(Graphics graphics) : public
+            }
+
+            class EasyEnemy {
+                SpaceShip enemySpaceShip : private
+                Rectangle mesh : private
+                Point coordinates : private
+                Dimension dimension : private
+                Double health : private
+
+                void update() : public
+                void draw(Graphics graphics) : public
+                void behavior() : public
+            }
+
+
+            class RegularEnemy {
+                SpaceShip enemySpaceShip : private
+                Rectangle mesh : private
+                Point coordinates : private
+                Dimension dimension : private
+                Double health : private
+
+                void update() : public
+                void draw(Graphics graphics) : public
+                void behavior() : public
+            }
+
+            class HardEnemy {
+                SpaceShip enemySpaceShip : private
+                Rectangle mesh : private
+                Point coordinates : private
+                Dimension dimension : private
+                Double health : private
+
+                void update() : public
+                void draw(Graphics graphics) : public
+                void behavior() : public
+            }
+
+            class BossEnemy {
+                SpaceShip enemySpaceShip : private
+                Rectangle mesh : private
+                Point coordinates : private
+                Dimension dimension : private
+                Double health : private
+
+
+                void update() : public
+                void draw(Graphics graphics) : public
+                void behavior() : public
+            }
+
+            class StaticEnemy {
+                Rectangle mesh : private
+                Point coordinates : private
+                Dimension dimension : private
+                Double health : private
+
+                void update() : public
+                void draw(Graphics graphics) : public
+                void behavior() : public
             }
         }
     }
@@ -161,10 +229,8 @@ package game{
         GameWindow .. GameWindowBuilder
 
         GameWindow "1" o-- "1" Engine
-
     }
 }
-
 
 Engine "1" *-- "1" PlayerInputListener
 
@@ -179,12 +245,21 @@ GameObjects "1" o-- "1.." Projectile
 GameObjects "1" *-- "1.." FiringPattern
 GameObjects "1" *-- "1.." Gun
 GameObjects "1" *-- "1.." Player
-GameObjects "1" *-- "1.." Ship
+GameObjects "1" *-- "1.." SpaceShip
+GameObjects "1" *-- "1.." Enemy
 
 Gun "1" o-- "1" FiringPattern
 
-Player "1" o-- "1" Ship
+Player "1" o-- "1" SpaceShip
 Player "1" o-- "1" Gun
+
+Enemy "1" o-- "1" SpaceShip
+Enemy "1" o-- "1" Gun
+Enemy ^-- EasyEnemy
+Enemy ^-- RegularEnemy
+Enemy ^-- HardEnemy
+Enemy ^--- BossEnemy
+Enemy ^-- StaticEnemy
 
 ProjectileType . Projectile
 

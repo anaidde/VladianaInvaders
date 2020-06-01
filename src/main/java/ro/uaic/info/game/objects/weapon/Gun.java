@@ -1,6 +1,6 @@
 package ro.uaic.info.game.objects.weapon;
 
-import ro.uaic.info.game.objects.projectile.ProjectileType;
+import ro.uaic.info.game.objects.weapon.projectile.ProjectileType;
 
 public class Gun {
     private ProjectileType projectileType;

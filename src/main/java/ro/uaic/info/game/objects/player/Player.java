@@ -1,46 +1,62 @@
 package ro.uaic.info.game.objects.player;
 
+import com.sun.source.tree.BreakTree;
+import ro.uaic.info.engine.object.GameObject;
+import ro.uaic.info.engine.object.transform.Transform;
+import ro.uaic.info.engine.space.Double3;
+import ro.uaic.info.engine.sprite.AssetList;
+import ro.uaic.info.engine.sprite.SpriteLoader;
 import ro.uaic.info.game.objects.ship.Ship;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public class Player {
+public class Player implements GameObject {
     private Ship ship;
-    private Rectangle mesh;
-    private Point coordinates;
-    private Dimension dimension;
+    private Transform transform;
+    private PlayerInputListener listener;
 
-    public void update() {
-
+    public PlayerInputListener getInputListener(){
+        return this.listener;
     }
 
-    public void draw(Graphics graphics) {
+    public void update() {
+        this.movePlayer();
 
+        Double3 oldLocation = this.getTransform().getLocation();
+
+        this.getTransform().setLocation(
+                oldLocation.getX() + this.getTransform().getVelocity().getX(),
+                oldLocation.getY() + this.getTransform().getVelocity().getY(),
+                oldLocation.getZ() + this.getTransform().getVelocity().getZ()
+        );
+    }
+
+    @Override
+    public boolean hasMesh() {
+        return true;
+    }
+
+    @Override
+    public boolean hasCollision() {
+        return true;
+    }
+
+    @Override
+    public boolean hasSprite() {
+        return true;
+    }
+
+    @Override
+    public BufferedImage getSprite() {
+        return this.ship.getSprite();
     }
 
     public static class PlayerBuilder {
-        private Ship ship ;
-        private Rectangle mesh;
-        private Point coordinates = new Point(0, 0); // instantiate default for all
-        private Dimension dimension = new Dimension(0,0);
+        private Ship ship = new Ship().setSprite(SpriteLoader.getInstance().getAsset(AssetList.PH_SHIP_1));
 
         public PlayerBuilder withShip(Ship ship) {
             this.ship = ship;
-            return this;
-        }
-
-        public PlayerBuilder withMesh(Rectangle mesh) {
-            this.mesh = mesh;
-            return this;
-        }
-
-        public PlayerBuilder withCoordinates(Point coordinates) {
-            this.coordinates = coordinates;
-            return this;
-        }
-
-        public PlayerBuilder withDimension(Dimension dimension) {
-            this.dimension = dimension;
             return this;
         }
 
@@ -48,29 +64,36 @@ public class Player {
             Player player = new Player();
 
             player.ship = this.ship;
-            player.mesh = this.mesh;
-            player.coordinates = this.coordinates;
-            player.dimension = this.dimension;
+            player.transform = this.ship.getTransform();
+            player.listener = new PlayerInputListener();
 
             return player;
         }
+    }
 
-
+    public void setTransform(Transform transform) {
+        this.ship.setTransform(transform);
     }
 
     public Ship getShip() {
         return ship;
     }
 
-    public Rectangle getMesh() {
-        return mesh;
+    public Shape getMesh() {
+        return this.ship.getMesh();
     }
 
-    public Point getCoordinates() {
-        return coordinates;
+    @Override
+    public Transform getTransform() {
+        return this.ship.getTransform();
     }
 
-    public Dimension getDimension() {
-        return dimension;
+    @Override
+    public GameObject copy() {
+        return null;
+    }
+
+    private void movePlayer(){
+        this.transform.treatMovementInput(this.listener);
     }
 }

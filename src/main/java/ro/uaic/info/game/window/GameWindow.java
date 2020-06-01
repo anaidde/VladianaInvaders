@@ -78,6 +78,10 @@ public class GameWindow extends JFrame {
     public GameWindow initialize(){
         this.engine.initialiseEngine(); /// will return if already initialized
 
+        if(this.engine.getGameObjects().getPlayerObject() != null) {
+            this.addKeyListener(this.engine.getGameObjects().getPlayerObject().getInputListener());
+        }
+
         return this.buildWindow().buildComponents();
     }
 

@@ -61,6 +61,10 @@ public class Engine {
         return this;
     }
 
+    public GameWindow getWindow() {
+        return window;
+    }
+
     /**
      * Will call ALL objects in engine that need updating every frame
      */
@@ -68,6 +72,8 @@ public class Engine {
         /*
             TODO : Update ALL game rules here (objects etc. )
          */
+
+        this.gameObjects.update();
 
         this.redraw();
     }
@@ -86,6 +92,10 @@ public class Engine {
         /*
          *  TODO : REDRAW ALL OBJECTS HERE
          */
+
+        this.gameObjects.redraw(graphics);
+
+        this.debug("Game Objects Active : " + this.gameObjects.toString(), Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
 
         strategy.show();
         graphics.dispose();
