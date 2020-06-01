@@ -1,0 +1,11 @@
+@startuml
+
+title __TESTS's Class Diagram__\n
+
+  namespace ro.uaic.info.configuration.tests {
+    class ro.uaic.info.configuration.tests.EngineTest {
+        {static} + main()
+    }
+  }
+
+@enduml

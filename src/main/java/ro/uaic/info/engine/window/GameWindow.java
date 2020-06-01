@@ -1,4 +1,4 @@
-package ro.uaic.info.game.window;
+package ro.uaic.info.engine.window;
 
 import ro.uaic.info.engine.Debug;
 import ro.uaic.info.engine.Engine;

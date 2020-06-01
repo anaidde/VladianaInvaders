@@ -1,0 +1,24 @@
+@startuml
+
+title __EXCEPTION's Class Diagram__\n
+
+  namespace ro.uaic.info.engine {
+    namespace exception {
+      class ro.uaic.info.engine.exception.EngineExceptionNoWindow {
+          + EngineExceptionNoWindow()
+      }
+    }
+  }
+  
+
+  namespace ro.uaic.info.engine {
+    namespace exception {
+      class ro.uaic.info.engine.exception.EngineExceptionUninitialized {
+          + EngineExceptionUninitialized()
+          + EngineExceptionUninitialized()
+      }
+    }
+  }
+
+
+@enduml

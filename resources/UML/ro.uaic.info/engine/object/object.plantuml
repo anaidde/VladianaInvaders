@@ -1,0 +1,58 @@
+@startuml
+
+title __OBJECT's Class Diagram__\n
+
+  namespace ro.uaic.info.engine {
+    namespace object {
+      interface ro.uaic.info.engine.object.GameObject {
+          {static} + DEFAULT_SPRITE_HEIGHT : int
+          {static} + DEFAULT_SPRITE_WIDTH : int
+          + collisionCheck()
+          {abstract} + copy()
+          + draw()
+          + getHeight()
+          + getMesh()
+          + getSprite()
+          + getTransform()
+          + getWidth()
+          + hasCollision()
+          + hasMesh()
+          + hasSprite()
+          + isHidden()
+          + isShown()
+          + realUpdate()
+          + update()
+      }
+    }
+  }
+  
+
+  namespace ro.uaic.info.engine {
+    namespace object {
+      class ro.uaic.info.engine.object.Trigger {
+          {static} + WORLD_EDGE : String
+          - collides : boolean
+          - label : String
+          - meshSize : Dimension
+          + copy()
+          + getHeight()
+          + getLabel()
+          + getTransform()
+          + getWidth()
+          + hasCollision()
+          + hasMesh()
+          + setCollides()
+          + setLabel()
+          + setMesh()
+          + setTransform()
+      }
+    }
+  }
+  
+
+  ro.uaic.info.engine.object.Trigger .up.|> ro.uaic.info.engine.object.GameObject
+  ro.uaic.info.engine.object.Trigger o-- ro.uaic.info.engine.object.transform.Transform : transform
+
+
+
+@enduml

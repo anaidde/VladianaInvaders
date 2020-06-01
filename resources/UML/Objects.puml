@@ -49,9 +49,7 @@ package engine{
         Engine "throws" *-- EngineExceptionUninitialized
         Engine "throws" *-- EngineExceptionNoWindow
     }
-}
 
-package game{
     package entity{
         class GameObjects{
             Player : private
@@ -62,6 +60,52 @@ package game{
         }
     }
 
+    package object{
+        package transform{
+
+        }
+    }
+
+    package space{
+
+    }
+
+    package sprite{
+
+    }
+
+    package window{
+            class GameWindow{
+                Engine engine : private
+
+                Point topLeftCorner : private
+                Dimension windowSize : private
+                Canvas canvas : private
+
+                GameWindow initialize() : public
+                GameWindow buildWindow() : public
+                GameWindow buildComponents() : public
+
+                GameWindow run(boolean) : public
+            }
+
+            class GameWindowBuilder{
+                GameWindowBuilder withPosition(Point) : public
+                GameWindowBuilder withSize(Dimension) : public
+                GameWindowBuilder withDebugLevel(DebugLevel) : public
+                GameWindowBuilder withPosition(int, int) : public
+                GameWindowBuilder withSize(int, int) : public
+                GameWindowBuilder initializeEngine() : public
+                GameWindow build() : public
+            }
+
+            GameWindow .. GameWindowBuilder
+
+            GameWindow "1" o-- "1" Engine
+        }
+}
+
+package game{
     package objects{
         package player{
             class Player{
@@ -199,36 +243,6 @@ package game{
                 void behavior() : public
             }
         }
-    }
-
-    package window{
-        class GameWindow{
-            Engine engine : private
-
-            Point topLeftCorner : private
-            Dimension windowSize : private
-            Canvas canvas : private
-
-            GameWindow initialize() : public
-            GameWindow buildWindow() : public
-            GameWindow buildComponents() : public
-
-            GameWindow run(boolean) : public
-        }
-
-        class GameWindowBuilder{
-            GameWindowBuilder withPosition(Point) : public
-            GameWindowBuilder withSize(Dimension) : public
-            GameWindowBuilder withDebugLevel(DebugLevel) : public
-            GameWindowBuilder withPosition(int, int) : public
-            GameWindowBuilder withSize(int, int) : public
-            GameWindowBuilder initializeEngine() : public
-            GameWindow build() : public
-        }
-
-        GameWindow .. GameWindowBuilder
-
-        GameWindow "1" o-- "1" Engine
     }
 }
 

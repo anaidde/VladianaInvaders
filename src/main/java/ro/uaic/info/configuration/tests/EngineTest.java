@@ -9,7 +9,7 @@ import ro.uaic.info.engine.sprite.AssetList;
 import ro.uaic.info.engine.sprite.SpriteLoader;
 import ro.uaic.info.game.objects.player.Player;
 import ro.uaic.info.game.objects.ship.Ship;
-import ro.uaic.info.game.window.GameWindow;
+import ro.uaic.info.engine.window.GameWindow;
 
 import java.awt.*;
 
