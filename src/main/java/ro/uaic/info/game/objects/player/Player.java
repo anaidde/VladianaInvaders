@@ -22,14 +22,6 @@ public class Player implements GameObject {
 
     public void update() {
         this.movePlayer();
-
-        Double3 oldLocation = this.getTransform().getLocation();
-
-        this.getTransform().setLocation(
-                oldLocation.getX() + this.getTransform().getVelocity().getX(),
-                oldLocation.getY() + this.getTransform().getVelocity().getY(),
-                oldLocation.getZ() + this.getTransform().getVelocity().getZ()
-        );
     }
 
     @Override
@@ -56,7 +48,7 @@ public class Player implements GameObject {
         private Ship ship = new Ship().setSprite(SpriteLoader.getInstance().getAsset(AssetList.PH_SHIP_1));
 
         public PlayerBuilder withShip(Ship ship) {
-            this.ship = ship;
+            this.ship = (Ship)ship.copy();
             return this;
         }
 
@@ -79,7 +71,7 @@ public class Player implements GameObject {
         return ship;
     }
 
-    public Shape getMesh() {
+    public Rectangle getMesh() {
         return this.ship.getMesh();
     }
 

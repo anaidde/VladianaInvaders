@@ -1,6 +1,7 @@
-package ro.uaic.info.game.entity;
+package ro.uaic.info.engine.entity;
 
 import ro.uaic.info.engine.object.GameObject;
+import ro.uaic.info.engine.object.Trigger;
 import ro.uaic.info.game.objects.player.Player;
 import ro.uaic.info.game.objects.ship.Ship;
 import ro.uaic.info.game.objects.weapon.Gun;
@@ -14,9 +15,18 @@ public class GameObjects {
     private Player playerObject;
 
     private List<GameObject> gameObjects;
+    private List<Trigger> triggers;
 
     private List<Gun> gunAssets;
     private List<Ship> shipAssets;
+
+    public List<GameObject> getAll() {
+        return gameObjects;
+    }
+
+    public List<Trigger> getTriggers() {
+        return triggers;
+    }
 
     public Player getPlayerObject() {
         return playerObject;
@@ -38,13 +48,14 @@ public class GameObjects {
 
     public GameObjects() {
         this.gameObjects = new ArrayList<>();
+        this.triggers = new ArrayList<>();
 
         this.gunAssets = new ArrayList<>();
         this.shipAssets = new ArrayList<>();
     }
 
     public void update() {
-        this.gameObjects.forEach(GameObject::update);
+        this.gameObjects.forEach(GameObject::realUpdate);
     }
 
     public void redraw(Graphics g){
@@ -66,6 +77,12 @@ public class GameObjects {
 
     public GameObjects addGameObjects(Collection<GameObject> gameObjects){
         this.gameObjects.addAll(gameObjects);
+        return this;
+    }
+
+    public GameObjects addTrigger(Trigger trigger){
+        if(!this.triggers.contains(trigger))
+            this.triggers.add(trigger);
         return this;
     }
 }

@@ -2,12 +2,11 @@ package ro.uaic.info.engine;
 
 import ro.uaic.info.engine.exception.EngineExceptionNoWindow;
 import ro.uaic.info.engine.exception.EngineExceptionUninitialized;
-import ro.uaic.info.game.entity.GameObjects;
+import ro.uaic.info.engine.entity.GameObjects;
 import ro.uaic.info.game.window.GameWindow;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 public class Engine {
     private static Engine instance;
@@ -24,10 +23,20 @@ public class Engine {
     private GameWindow window;
 
     private boolean initialized = false;
+    private boolean drawMeshes = false;
 
     public Engine setDebugLevel(Debug.DebugLevel debugLevel){
         this.debugHandler.setDebugLevel(debugLevel);
         return this;
+    }
+
+    public Engine setDrawMeshes(boolean drawMeshes) {
+        this.drawMeshes = drawMeshes;
+        return this;
+    }
+
+    public boolean getDrawMeshes(){
+        return this.drawMeshes;
     }
 
     public static Engine getInstance(){

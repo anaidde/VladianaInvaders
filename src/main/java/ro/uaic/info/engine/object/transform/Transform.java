@@ -10,12 +10,12 @@ public class Transform {
     private Double3 velocity;
     private Double3 scale;
 
-    private static final double HORIZONTAL_SPEED_CAP = 10;
-    private static final double VERTICAL_SPEED_CAP = 10;
+    private static final double HORIZONTAL_SPEED_CAP = 12;
+    private static final double VERTICAL_SPEED_CAP = 12;
     private static final double HORIZONTAL_SPEED_INCREASE = 0.25;
     private static final double VERTICAL_SPEED_INCREASE = 0.25;
-    private static final double HORIZONTAL_SPEED_DECREASE = 0.4;
-    private static final double VERTICAL_SPEED_DECREASE = 0.4;
+    private static final double HORIZONTAL_SPEED_DECREASE = 0.15;
+    private static final double VERTICAL_SPEED_DECREASE = 0.15;
 
     public Transform(){
         this.location = new Double3();
@@ -86,7 +86,7 @@ public class Transform {
     }
 
     public Transform setVelocity(double x, double y, double z){
-        this.rotation = new Double3(x, y, z);
+        this.velocity = new Double3(x, y, z);
         return this;
     }
 
@@ -94,30 +94,30 @@ public class Transform {
         if(listener.pressedUp()){
             this.velocity.setY(Math.max(this.velocity.getY() - VERTICAL_SPEED_INCREASE, -VERTICAL_SPEED_CAP));
         } else if(this.velocity.getY() < 0) {
-            if(!listener.pressedDown()){
+           // if(!listener.pressedDown()){
                 this.velocity.setY(Math.min(this.velocity.getY() + VERTICAL_SPEED_DECREASE , 0));
-            }
+            //}
         }
         if(listener.pressedDown()){
             this.velocity.setY(Math.min(this.velocity.getY() + VERTICAL_SPEED_INCREASE, VERTICAL_SPEED_CAP));
         } else if(this.velocity.getY() > 0) {
-            if(!listener.pressedUp()){
+           //if(!listener.pressedUp()){
                 this.velocity.setY(Math.max(this.velocity.getY() - VERTICAL_SPEED_DECREASE, 0));
-            }
+            //}
         }
         if(listener.pressedLeft()){
             this.velocity.setX(Math.max(this.velocity.getX() - HORIZONTAL_SPEED_INCREASE, -HORIZONTAL_SPEED_CAP));
         } else if(this.velocity.getX() < 0) {
-            if(!listener.pressedRight()){
+           // if(!listener.pressedRight()){
                 this.velocity.setX(Math.min(this.velocity.getX() + HORIZONTAL_SPEED_DECREASE, 0));
-            }
+            //}
         }
         if(listener.pressedRight()){
             this.velocity.setX(Math.min(this.velocity.getX() + HORIZONTAL_SPEED_INCREASE, HORIZONTAL_SPEED_CAP));
         } else if(this.velocity.getX() > 0) {
-            if(!listener.pressedLeft()){
+          //  if(!listener.pressedLeft()){
                 this.velocity.setX(Math.max(this.velocity.getX() - HORIZONTAL_SPEED_DECREASE, 0));
-            }
+            //}
         }
     }
 }

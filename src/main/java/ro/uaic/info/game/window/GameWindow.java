@@ -29,6 +29,7 @@ public class GameWindow extends JFrame {
         private Dimension gameWindowDimension = new Dimension(DEFAULT_GAME_WINDOW_WIDTH, DEFAULT_GAME_WINDOW_HEIGHT);
         private boolean initEng = false;
         private Debug.DebugLevel debugLevel = Debug.DebugLevel.DEBUG_LEVEL_NONE;
+        private boolean drawMeshes = false;
 
         public GameWindowBuilder withPosition(Point position){
             this.topLeftCorner = position;
@@ -42,6 +43,11 @@ public class GameWindow extends JFrame {
 
         public GameWindowBuilder withDebugLevel(Debug.DebugLevel level){
             this.debugLevel = level;
+            return this;
+        }
+
+        public GameWindowBuilder drawMeshes(boolean toggle){
+            this.drawMeshes = toggle;
             return this;
         }
 
@@ -67,7 +73,8 @@ public class GameWindow extends JFrame {
 
             gameWindow.engine = Engine
                     .getInstance()
-                    .setDebugLevel(this.debugLevel);
+                    .setDebugLevel(this.debugLevel)
+                    .setDrawMeshes(this.drawMeshes);
             if(this.initEng)
                 gameWindow.engine.initialiseEngine();
 
