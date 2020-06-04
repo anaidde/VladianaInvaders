@@ -1,2 +1,0 @@
-# VladianaInvaders
-Proiect Java bazdmeg
