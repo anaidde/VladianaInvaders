@@ -15,6 +15,10 @@ public class PlayerInputListener implements KeyListener {
                 '}';
     }
 
+    public boolean keyPressed() {
+        return up || down || left || right;
+    }
+
     private boolean up;
     private boolean down;
     private boolean left;
