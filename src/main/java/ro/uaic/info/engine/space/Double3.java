@@ -1,5 +1,8 @@
 package ro.uaic.info.engine.space;
 
+import ro.uaic.info.engine.object.GameObject;
+import ro.uaic.info.game.objects.enemy.Enemy;
+
 public class Double3 {
     private double x;
     private double y;
