@@ -1,0 +1,264 @@
+@startuml
+
+
+  namespace ro.uaic.info{
+    namespace configuration{
+      namespace basic {
+        class BuildTest {
+          {static} + main()
+        }
+      }
+
+      namespace tests{
+        class EngineTest{
+          {static} + main()
+        }
+      }
+    }
+
+    namespace engine{
+      namespace entity{
+        class GameObjects{
+          - gameObjects : List<GameObject>
+          - gunAssets : List<Gun>
+          - shipAssets : List<Ship>
+          - triggers : List<Trigger>
+          + GameObjects()
+          + addGameObject()
+          + addGameObjects()
+          + addTrigger()
+          + getAll()
+          + getGun()
+          + getPlayerObject()
+          + getShip()
+          + getTriggers()
+          + redraw()
+          + setPlayerObject()
+          + toString()
+          + update()
+        }
+      }
+
+      namespace exception{
+        class EngineExceptionNoWindow {
+            + EngineExceptionNoWindow()
+        }
+
+        class EngineExceptionUninitialized {
+            + EngineExceptionUninitialized()
+            + EngineExceptionUninitialized()
+        }
+      }
+
+      namespace object {
+        namespace transform {
+          class Transform {
+            {static} - HORIZONTAL_SPEED_CAP : double
+            {static} - HORIZONTAL_SPEED_DECREASE : double
+            {static} - HORIZONTAL_SPEED_INCREASE : double
+            {static} - VERTICAL_SPEED_CAP : double
+            {static} - VERTICAL_SPEED_DECREASE : double
+            {static} - VERTICAL_SPEED_INCREASE : double
+            + Transform()
+            + getLocation()
+            + getRotation()
+            + getScale()
+            + getVelocity()
+            + setLocation()
+            + setLocation()
+            + setRotation()
+            + setRotation()
+            + setScale()
+            + setScale()
+            + setVelocity()
+            + setVelocity()
+            + toString()
+            + treatMovementInput()
+          }
+        }
+
+        interface GameObject{
+          {static} + DEFAULT_SPRITE_HEIGHT : int
+          {static} + DEFAULT_SPRITE_WIDTH : int
+          + collisionCheck()
+          {abstract} + copy()
+          + draw()
+          + getHeight()
+          + getMesh()
+          + getSprite()
+          + getTransform()
+          + getWidth()
+          + hasCollision()
+          + hasMesh()
+          + hasSprite()
+          + isHidden()
+          + isShown()
+          + realUpdate()
+          + update()
+        }
+
+        class Trigger{
+          {static} + WORLD_EDGE : String
+          - collides : boolean
+          - label : String
+          - meshSize : Dimension
+          + copy()
+          + getHeight()
+          + getLabel()
+          + getTransform()
+          + getWidth()
+          + hasCollision()
+          + hasMesh()
+          + setCollides()
+          + setLabel()
+          + setMesh()
+          + setTransform()
+        }
+      }
+
+      namespace space {
+        class Double3 {
+          - x : double
+          - y : double
+          - z : double
+          + Double3()
+          + Double3()
+          + getX()
+          + getY()
+          + getZ()
+          + setX()
+          + setY()
+          + setZ()
+          + toString()
+        }
+      }
+
+      namespace sprite{
+        enum AssetList{
+          PH_POWER_UP_1
+          PH_PROJECTILE_1
+          PH_PROJECTILE_2
+          PH_SHIP_1
+          PH_SHIP_2
+          PH_SHIP_3
+          UNKNOWN
+        }
+
+        class SpriteLoader{
+          {static} + DEFAULT_SPRITE_SHEET_PATH : String
+          {static} - DECAL_SPRITE_HEIGHT : int
+          {static} - DECAL_SPRITE_WIDTH : int
+          {static} - instance : SpriteLoader
+          - spriteImage : BufferedImage
+          + crop()
+          + getAsset()
+          {static} + getInstance()
+          + loadSpriteImage()
+          {static} + rotateYSprite()
+          - SpriteLoader()
+        }
+
+        SpriteLoader <- AssetList
+      }
+
+      namespace window{
+        class GameWindow {
+          {static} + DEFAULT_GAME_WINDOW_HEIGHT : int
+          {static} + DEFAULT_GAME_WINDOW_WIDTH : int
+          {static} + DEFAULT_X_OFFSET : int
+          {static} + DEFAULT_Y_OFFSET : int
+          - canvas : Canvas
+          - topLeftCorner : Point
+          - windowSize : Dimension
+          + getCanvas()
+          + initialize()
+          + run()
+          - GameWindow()
+          - buildComponents()
+          - buildWindow()
+        }
+
+        class ro.uaic.info.engine.window.GameWindow.GameWindowBuilder {
+          - drawMeshes : boolean
+          - gameWindowDimension : Dimension
+          - initEng : boolean
+          - topLeftCorner : Point
+          + build()
+          + drawMeshes()
+          + initializeEngine()
+          + withDebugLevel()
+          + withPosition()
+          + withPosition()
+          + withSize()
+          + withSize()
+        }
+      }
+
+      class Debug{
+        + Debug()
+        + printMessage()
+        + setDebugLevel()
+      }
+
+      class Engine{
+        {static} + DEFAULT_FPS_TARGET : int
+        - drawMeshes : boolean
+        - initialized : boolean
+        {static} - instance : Engine
+        - isActive : boolean
+        - targetFPS : int
+        + debug()
+        + debug()
+        + forceDebug()
+        + forceDebug()
+        + getDrawMeshes()
+        + getGameObjects()
+        {static} + getInstance()
+        + getWindow()
+        + initialiseEngine()
+        + run()
+        + setDebugLevel()
+        + setDrawMeshes()
+        + setGameWindow()
+        + stopEngine()
+        - Engine()
+        - redraw()
+        - update()
+      }
+
+      enum ro.uaic.info.engine.Debug.DebugLevel{
+        DEBUG_LEVEL_ALL_MESSAGES
+        DEBUG_LEVEL_CRITICAL
+        DEBUG_LEVEL_IMPORTANT
+        DEBUG_LEVEL_NONE
+      }
+
+      Debug <- DebugLevel
+    }
+  }
+
+  ro.uaic.info.engine.entity.GameObjects o-- ro.uaic.info.game.objects.player.Player : playerObject
+
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : location
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : rotation
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : scale
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : velocity
+
+  ro.uaic.info.engine.object.Trigger o-- ro.uaic.info.engine.object.transform.Transform : transform
+  ro.uaic.info.engine.object.Trigger .up.|> ro.uaic.info.engine.object.GameObject
+
+
+
+  ro.uaic.info.engine.window.GameWindow -up-|> javax.swing.JFrame
+  ro.uaic.info.engine.window.GameWindow o-- ro.uaic.info.engine.Engine : engine
+  ro.uaic.info.engine.window.GameWindow +-down- ro.uaic.info.engine.window.GameWindow.GameWindowBuilder
+  ro.uaic.info.engine.window.GameWindow.GameWindowBuilder o-- ro.uaic.info.engine.Debug.DebugLevel : debugLevel
+
+
+  ro.uaic.info.engine.Debug o-- ro.uaic.info.engine.Debug.DebugLevel : debugLevel
+  ro.uaic.info.engine.Debug +-down- ro.uaic.info.engine.Debug.DebugLevel
+  ro.uaic.info.engine.Engine o-- ro.uaic.info.engine.Debug : debugHandler
+  ro.uaic.info.engine.Engine o-- ro.uaic.info.engine.entity.GameObjects : gameObjects
+  ro.uaic.info.engine.Engine o-- ro.uaic.info.engine.window.GameWindow : window
+
+@enduml

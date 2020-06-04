@@ -1,0 +1,39 @@
+@startuml
+
+title __SPRITE's Class Diagram__\n
+
+  namespace ro.uaic.info.engine {
+    namespace sprite {
+      enum AssetList {
+        PH_POWER_UP_1
+        PH_PROJECTILE_1
+        PH_PROJECTILE_2
+        PH_SHIP_1
+        PH_SHIP_2
+        PH_SHIP_3
+        UNKNOWN
+      }
+    }
+  }
+  
+
+  namespace ro.uaic.info.engine {
+    namespace sprite {
+      class ro.uaic.info.engine.sprite.SpriteLoader {
+          {static} + DEFAULT_SPRITE_SHEET_PATH : String
+          {static} - DECAL_SPRITE_HEIGHT : int
+          {static} - DECAL_SPRITE_WIDTH : int
+          {static} - instance : SpriteLoader
+          - spriteImage : BufferedImage
+          + crop()
+          + getAsset()
+          {static} + getInstance()
+          + loadSpriteImage()
+          {static} + rotateYSprite()
+          - SpriteLoader()
+      }
+    }
+  }
+  
+
+@enduml

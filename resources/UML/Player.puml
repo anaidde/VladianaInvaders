@@ -1,0 +1,108 @@
+@startuml
+
+class Engine{
+
+    // SINGLETON \\\\
+
+    GameObjects : private
+
+    void update() : private
+    void redraw() : private
+    void initialiseEngine() : private
+    void run() : public THREAD SLEEP
+}
+
+class GameObjects{
+    Player : private
+    Gun gameGuns : private
+    PlayerShip gameShips : private
+
+    void update() : private
+}
+
+class Player{
+    Ship playerShip : private
+    Rectangle mesh : private
+    Point coordinates : private
+    Rectangle dimension : private
+
+    void update() : public
+    void draw(Graphics) : public
+}
+
+class Ship{
+    health : private
+    sprite : private
+    Rectangle spriteDimension : private
+}
+
+class Projectile{
+    ProjectileType : private
+    Rectangle mesh : private
+    Point coordinates : private
+    Rectangle dimension : private
+
+    void update() : public
+    void draw(Graphics) : public
+}
+
+enum ProjectileType{
+    /*
+        TBD
+    */
+}
+
+interface FiringPattern{
+    Projectile fireNextProjectile() : public
+}
+
+
+class Gun{
+    ProjectileType : private
+    FiringPattern : private
+}
+
+class LinearFiringPattern{
+
+}
+
+class ScatterShotFiringPattern{
+
+}
+
+class ChainGunFiringPattern{
+
+}
+
+class PlayerInputListener{
+    boolean pressedUp();
+    boolean pressedDown();
+    boolean pressedLeft();
+    boolean pressedRight();
+
+    diverseAlteFunctii(); ...
+}
+
+Engine "1" *-- "1" PlayerInputListener
+
+FiringPattern ^-- LinearFiringPattern
+FiringPattern ^-- ScatterShotFiringPattern
+FiringPattern ^-- ChainGunFiringPattern
+FiringPattern "1" *-- "1.." Projectile
+
+Engine "1" *-- "1" GameObjects
+
+GameObjects "1" o-- "1.." Projectile
+GameObjects "1" *-- "1.." FiringPattern
+GameObjects "1" *-- "1.." Gun
+GameObjects "1" *-- "1.." Player
+GameObjects "1" *-- "1.." Ship
+
+Gun "1" o-- "1" FiringPattern
+
+Player "1" o-- "1" Ship
+Player "1" o-- "1" Gun
+
+ProjectileType . Projectile
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+
+title __TRANSFORM's Class Diagram__\n
+
+  namespace ro.uaic.info.engine {
+    namespace object {
+      namespace transform {
+        class ro.uaic.info.engine.object.transform.Transform {
+            {static} - HORIZONTAL_SPEED_CAP : double
+            {static} - HORIZONTAL_SPEED_DECREASE : double
+            {static} - HORIZONTAL_SPEED_INCREASE : double
+            {static} - VERTICAL_SPEED_CAP : double
+            {static} - VERTICAL_SPEED_DECREASE : double
+            {static} - VERTICAL_SPEED_INCREASE : double
+            + Transform()
+            + getLocation()
+            + getRotation()
+            + getScale()
+            + getVelocity()
+            + setLocation()
+            + setLocation()
+            + setRotation()
+            + setRotation()
+            + setScale()
+            + setScale()
+            + setVelocity()
+            + setVelocity()
+            + toString()
+            + treatMovementInput()
+        }
+      }
+    }
+  }
+  
+
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : location
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : rotation
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : scale
+  ro.uaic.info.engine.object.transform.Transform o-- ro.uaic.info.engine.space.Double3 : velocity
+
+@enduml
