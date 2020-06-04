@@ -1,6 +1,5 @@
 package ro.uaic.info.game.objects.player;
 
-import com.sun.source.tree.BreakTree;
 import ro.uaic.info.engine.object.GameObject;
 import ro.uaic.info.engine.object.transform.Transform;
 import ro.uaic.info.engine.space.Double3;
