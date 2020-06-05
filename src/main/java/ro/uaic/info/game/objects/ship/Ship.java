@@ -2,6 +2,7 @@ package ro.uaic.info.game.objects.ship;
 
 import ro.uaic.info.engine.object.GameObject;
 import ro.uaic.info.engine.object.transform.Transform;
+import ro.uaic.info.engine.space.Double3;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,17 +13,31 @@ public class Ship implements GameObject {
 
     private double health;
     private BufferedImage sprite;
-    private Shape mesh;
+//    private Shape mesh;  Deprecated, treated by GameObject. Custom mesh enable with override of GetHeight() and GetWidth()
+    private Double3 movementSpeed;
+
+    public static final double DEFAULT_VERTICAL_MOVEMENT_SPEED = 10;
+    public static final double DEFAULT_HORIZONTAL_MOVEMENT_SPEED = 10;
+
+    public static final Double3 DEFAULT_MOVEMENT_SPEED = new Double3(DEFAULT_HORIZONTAL_MOVEMENT_SPEED, DEFAULT_VERTICAL_MOVEMENT_SPEED, 0.0);
     //private Dimension spriteDimension;
 
     private Transform transform;
+
+    public void setMovementSpeed(Double3 movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
+
+    public Double3 getMovementSpeed() {
+        return movementSpeed;
+    }
 
     @Override
     public String toString() {
         return "Ship{" +
                 "health=" + health +
                 ", sprite=" + sprite +
-                ", mesh=" + mesh +
+//                ", mesh=" + mesh +
                 ", transform=" + transform +
                 '}';
     }
@@ -34,13 +49,16 @@ public class Ship implements GameObject {
     public Ship(double health) {
         this.health = health;
         this.transform = new Transform();
+        this.movementSpeed = new Double3(DEFAULT_MOVEMENT_SPEED);
+
     }
 
     public Ship(Ship s){
         this.sprite = s.sprite;
         this.health = s.health;
-        this.mesh = s.mesh;
+//        this.mesh = s.mesh;
         this.transform = s.transform;
+        this.movementSpeed = new Double3(DEFAULT_MOVEMENT_SPEED);
     }
 
     public Ship(){

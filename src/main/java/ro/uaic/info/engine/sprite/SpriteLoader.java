@@ -62,7 +62,7 @@ public class SpriteLoader {
             case PH_SHIP_3: return this.crop(2, 0);
             case PH_PROJECTILE_1: return this.crop(0, 1);
             case PH_PROJECTILE_2: return this.crop(1, 1);
-            case PH_POWER_UP_1: return this.crop(2, 2);
+            case PH_POWER_UP_1: return this.crop(2, 1);
             default : return this.crop(9, 9);
         }
     }

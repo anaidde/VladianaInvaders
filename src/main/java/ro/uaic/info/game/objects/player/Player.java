@@ -1,6 +1,5 @@
 package ro.uaic.info.game.objects.player;
 
-import com.sun.source.tree.BreakTree;
 import ro.uaic.info.engine.object.GameObject;
 import ro.uaic.info.engine.object.transform.Transform;
 import ro.uaic.info.engine.space.Double3;
@@ -86,6 +85,19 @@ public class Player implements GameObject {
     }
 
     private void movePlayer(){
-        this.transform.treatMovementInput(this.listener);
+        //this.transform.treatMovementInput(this.listener)
+
+        Double3 appliedForce = new Double3(0.0, 0.0, 0.0);
+
+        if(this.listener.pressedLeft())
+            appliedForce.setX( appliedForce.getX() - this.ship.getMovementSpeed().getX() );
+        if(this.listener.pressedRight())
+            appliedForce.setX( appliedForce.getX() + this.ship.getMovementSpeed().getX() );
+        if(this.listener.pressedUp())
+            appliedForce.setY( appliedForce.getY() - this.ship.getMovementSpeed().getY() );
+        if(this.listener.pressedDown())
+            appliedForce.setY( appliedForce.getY() + this.ship.getMovementSpeed().getY() );
+
+        this.transform.push(appliedForce);
     }
 }

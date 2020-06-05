@@ -20,6 +20,16 @@ public class Double3 {
         this.z = z;
     }
 
+    public boolean isNull(){
+        return this.x == 0 && this.y == 0 && this.z == 0;
+    }
+
+    public Double3(Double3 obj){
+        this.x = obj.getX();
+        this.y = obj.getY();
+        this.z = obj.getZ();
+    }
+
     public double getX() {
         return x;
     }
