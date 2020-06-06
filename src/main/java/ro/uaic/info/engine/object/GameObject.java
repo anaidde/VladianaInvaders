@@ -73,6 +73,13 @@ public interface GameObject {
         }
     }
 
+    default void destroy(){
+        Engine.getInstance().forceDebug("destroy " + this, Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
+    }
+
+    default boolean toBeDestroyed() {
+        return false;
+    }
 
     default boolean hasMesh(){
         return false;
