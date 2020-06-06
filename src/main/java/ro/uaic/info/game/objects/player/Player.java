@@ -6,6 +6,8 @@ import ro.uaic.info.engine.space.Double3;
 import ro.uaic.info.engine.sprite.AssetList;
 import ro.uaic.info.engine.sprite.SpriteLoader;
 import ro.uaic.info.game.objects.ship.Ship;
+import ro.uaic.info.game.objects.weapon.Gun;
+import ro.uaic.info.game.objects.weapon.pattern.IonPattern;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,6 +16,14 @@ public class Player implements GameObject {
     private Ship ship;
     private Transform transform;
     private PlayerInputListener listener;
+
+    private Gun playerBlaster;
+
+    public Player setPlayerBlaster(Gun playerBlaster) {
+        this.playerBlaster = playerBlaster;
+
+        return this;
+    }
 
     public PlayerInputListener getInputListener(){
         return this.listener;
@@ -58,6 +68,8 @@ public class Player implements GameObject {
             player.transform = this.ship.getTransform();
             player.listener = new PlayerInputListener();
 
+            player.playerBlaster = new Gun.GunBuilder().withShooter(player).withPattern(new IonPattern()).build();
+
             return player;
         }
     }
@@ -98,6 +110,14 @@ public class Player implements GameObject {
         if(this.listener.pressedDown())
             appliedForce.setY( appliedForce.getY() + this.ship.getMovementSpeed().getY() );
 
+        if(this.listener.pressedFireWeapon())
+            this.playerBlaster.fire();
+
         this.transform.push(appliedForce);
+    }
+
+    @Override
+    public String getLabel() {
+        return GameObject.PLAYER_LABEL;
     }
 }

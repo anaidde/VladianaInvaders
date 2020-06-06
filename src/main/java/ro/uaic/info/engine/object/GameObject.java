@@ -1,5 +1,6 @@
 package ro.uaic.info.engine.object;
 
+import ro.uaic.info.engine.Debug;
 import ro.uaic.info.engine.Engine;
 import ro.uaic.info.engine.object.transform.Transform;
 import ro.uaic.info.engine.space.Double3;
@@ -12,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface GameObject {
+
+    String DEFAULT_LABEL = "UNDEFINED";
+    String PROJECTILE_LABEL = "PROJECTILE";
+    String PLAYER_LABEL = "PLAYER";
+
     int DEFAULT_SPRITE_WIDTH = 75;
     int DEFAULT_SPRITE_HEIGHT = 75;
 
@@ -28,21 +34,28 @@ public interface GameObject {
                     ),
                     (int) objectTransform.getLocation().getX(),
                     (int) objectTransform.getLocation().getY(),
-                    (int) (getWidth() * objectTransform.getScale().getX()),
-                    (int) (getHeight() * objectTransform.getScale().getZ()),
+//                    (int) (getWidth() * objectTransform.getScale().getX()),
+//                    (int) (getHeight() * objectTransform.getScale().getZ()),
+                    (int) (getSprite().getWidth() * objectTransform.getScale().getX()),
+                    (int) (getSprite().getHeight() * objectTransform.getScale().getY()),
                     null
             );
 
             if(Engine.getInstance().getDrawMeshes()){
                 g.setColor(Color.GREEN);
+                Rectangle mesh = this.getMesh();
                 g.drawRect(
-                        (int)objectTransform.getLocation().getX(),
-                        (int)objectTransform.getLocation().getY(),
-                        (int) (getWidth() * objectTransform.getScale().getX()),
-                        (int) (getWidth() * objectTransform.getScale().getY())
+                    mesh.x,
+                    mesh.y,
+                    mesh.width,
+                    mesh.height
                 );
             }
         }
+    }
+
+    default String getLabel(){
+        return DEFAULT_LABEL;
     }
 
     default void update(){
@@ -95,11 +108,13 @@ public interface GameObject {
     }
 
     default Rectangle getMesh(){
+
+
         return new Rectangle(
             (int)getTransform().getLocation().getX(),
             (int)getTransform().getLocation().getY(),
             (int)(getWidth()*getTransform().getScale().getX()),
-            (int)(getHeight()*getTransform().getScale().getX())
+            (int)(getHeight()*getTransform().getScale().getY())
         );
     }
 
@@ -154,7 +169,7 @@ public interface GameObject {
                     oldLocation.getZ() + this.getTransform().getVelocity().getZ()
             ));
 
-            System.out.println(this.oldCollisionCheck());
+            Engine.getInstance().debug(this.oldCollisionCheck().toString(), Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
 
             if (this.hasCollision() && !this.oldCollisionCheck().isEmpty()) {
                 this.getTransform().setLocation(oldLocation);
@@ -169,7 +184,7 @@ public interface GameObject {
                     oldLocation.getZ() + this.getTransform().getVelocity().getZ()
             ));
 
-            System.out.println(this.oldCollisionCheck());
+            Engine.getInstance().debug(this.oldCollisionCheck().toString(), Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
 
             if (this.hasCollision() && !this.oldCollisionCheck().isEmpty()) {
                 this.getTransform().setLocation(oldLocation);

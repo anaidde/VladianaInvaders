@@ -17,6 +17,10 @@ public class GameObjects {
     private List<GameObject> gameObjects;
     private List<Trigger> triggers;
 
+    private List<GameObject> toBeAddedAfterFrame;
+
+    private List<FrameTimer> coolDownTimers;
+
     private List<Gun> gunAssets;
     private List<Ship> shipAssets;
 
@@ -50,12 +54,20 @@ public class GameObjects {
         this.gameObjects = new ArrayList<>();
         this.triggers = new ArrayList<>();
 
+        this.coolDownTimers = new ArrayList<>();
+
         this.gunAssets = new ArrayList<>();
         this.shipAssets = new ArrayList<>();
+
+        this.toBeAddedAfterFrame = new ArrayList<>();
     }
 
     public void update() {
         this.gameObjects.forEach(GameObject::realUpdate);
+        this.coolDownTimers.forEach(FrameTimer::tick);
+
+        this.gameObjects.addAll(this.toBeAddedAfterFrame);
+        this.toBeAddedAfterFrame.clear();
     }
 
     public void redraw(Graphics g){
@@ -70,13 +82,18 @@ public class GameObjects {
         return this.shipAssets;
     }
 
+    public GameObjects addTimer(FrameTimer timer){
+        this.coolDownTimers.add(timer);
+        return this;
+    }
+
     public GameObjects addGameObject(GameObject gameObject){
-        this.gameObjects.add(gameObject);
+        this.toBeAddedAfterFrame.add(gameObject);
         return this;
     }
 
     public GameObjects addGameObjects(Collection<GameObject> gameObjects){
-        this.gameObjects.addAll(gameObjects);
+        this.toBeAddedAfterFrame.addAll(gameObjects);
         return this;
     }
 

@@ -133,13 +133,13 @@ title __VLADIANAINVADERS's Class Diagram__\n
   
 
   namespace ro.uaic.info.game.objects.weapon {
-    class ro.uaic.info.game.objects.weapon.ChainGunFirePattern {
+    class ro.uaic.info.game.objects.weapon.pattern.ChainGunFirePattern {
     }
   }
   
 
   namespace ro.uaic.info.game.objects.weapon {
-    class ro.uaic.info.game.objects.weapon.FiringPattern {
+    class ro.uaic.info.game.objects.weapon.pattern.FiringPattern {
     }
   }
   
@@ -151,13 +151,13 @@ title __VLADIANAINVADERS's Class Diagram__\n
   
 
   namespace ro.uaic.info.game.objects.weapon {
-    class ro.uaic.info.game.objects.weapon.LinearFiringPattern {
+    class ro.uaic.info.game.objects.weapon.pattern.LinearFiringPattern {
     }
   }
   
 
   namespace ro.uaic.info.game.objects.weapon {
-    class ro.uaic.info.game.objects.weapon.ScatterShotFiringPattern {
+    class ro.uaic.info.game.objects.weapon.pattern.ScatterShotFiringPattern {
     }
   }
   
@@ -198,7 +198,7 @@ title __VLADIANAINVADERS's Class Diagram__\n
   ro.uaic.info.game.objects.player.PlayerInputListener .up.|> java.awt.event.KeyListener
   ro.uaic.info.game.objects.ship.Ship .up.|> ro.uaic.info.engine.object.GameObject
   ro.uaic.info.game.objects.ship.Ship o-- ro.uaic.info.engine.object.transform.Transform : transform
-  ro.uaic.info.game.objects.weapon.Gun o-- ro.uaic.info.game.objects.weapon.FiringPattern : firingPattern
+  ro.uaic.info.game.objects.weapon.Gun o-- ro.uaic.info.game.objects.weapon.pattern.FiringPattern : firingPattern
   ro.uaic.info.game.objects.weapon.Gun o-- ro.uaic.info.game.objects.weapon.projectile.ProjectileType : projectileType
   ro.uaic.info.game.objects.weapon.projectile.Projectile o-- ro.uaic.info.game.objects.weapon.projectile.ProjectileType : projectileType
 

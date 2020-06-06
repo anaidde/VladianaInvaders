@@ -10,10 +10,14 @@ import ro.uaic.info.engine.sprite.SpriteLoader;
 import ro.uaic.info.game.objects.player.Player;
 import ro.uaic.info.game.objects.ship.Ship;
 import ro.uaic.info.engine.window.GameWindow;
+import ro.uaic.info.game.objects.weapon.projectile.Projectile;
 
 import java.awt.*;
 
 public class EngineTest {
+    public static int windowWidth = 1366;
+    public static int windowHeight = 768;
+
     public static void main(String[] args) {
 
         Ship a = new Ship().setSprite(SpriteLoader.getInstance().getAsset(AssetList.PH_SHIP_1));
@@ -25,17 +29,20 @@ public class EngineTest {
 //                new Player.PlayerBuilder().withShip(a).build()
 //        );
 
+        Engine.getInstance().getGameObjects().addGameObject(Projectile.createIon(new Transform().setLocation(500, 500, 0)));
+        Engine.getInstance().getGameObjects().addGameObject(Projectile.createEnergy(new Transform().setLocation(500, 600, 0)));
+
         Engine.getInstance().getGameObjects().setPlayerObject(new Player.PlayerBuilder().withShip(a).build());
         Engine.getInstance().getGameObjects().addTrigger(
                 new Trigger()
                     .setCollides(true)
                     .setTransform(
                             new Transform()
-                                .setLocation(75,75,0)
+                                .setLocation(0,0,0)
                     )
                     .setLabel(Trigger.WORLD_EDGE)
                     .setMesh(
-                            new Dimension(1366 - 150 - 15, 768 - 150 - 38)
+                            new Dimension(1366 - 15, 768 - 38)
                     )
         );
 
@@ -47,7 +54,6 @@ public class EngineTest {
                 .drawMeshes(true)
                 .build()
                 .initialize()
-                .run(false);
-
+                .run(false).pack();
     }
 }

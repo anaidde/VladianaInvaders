@@ -5,6 +5,8 @@ import java.awt.event.KeyListener;
 
 public class PlayerInputListener implements KeyListener {
 
+    private char fireWeaponKeyCode = ' ';
+
     @Override
     public String toString() {
         return "PlayerInputListener{" +
@@ -15,6 +17,14 @@ public class PlayerInputListener implements KeyListener {
                 '}';
     }
 
+    public void setFireWeaponKeyCode(char fireWeaponKeyCode) {
+        this.fireWeaponKeyCode = fireWeaponKeyCode;
+    }
+
+    public char getFireWeaponKeyCode() {
+        return fireWeaponKeyCode;
+    }
+
     public boolean keyPressed() {
         return up || down || left || right;
     }
@@ -23,6 +33,9 @@ public class PlayerInputListener implements KeyListener {
     private boolean down;
     private boolean left;
     private boolean right;
+    private boolean fireWeapon;
+
+    public boolean pressedFireWeapon() { return fireWeapon; }
 
     public boolean pressedUp() {
         return up;
@@ -48,16 +61,16 @@ public class PlayerInputListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
-            case 'w' :
+            case 'w':
                 this.up = true;
                 break;
-            case 's' :
+            case 's':
                 this.down = true;
                 break;
-            case 'd' :
+            case 'd':
                 this.right = true;
                 break;
-            case 'a' :
+            case 'a':
                 this.left = true;
                 break;
         }
@@ -76,6 +89,9 @@ public class PlayerInputListener implements KeyListener {
                 this.down = true;
                 break;
         }
+
+        if(e.getKeyChar() == fireWeaponKeyCode)
+            this.fireWeapon = true;
     }
 
     @Override
@@ -109,5 +125,8 @@ public class PlayerInputListener implements KeyListener {
                 this.down = false;
                 break;
         }
+
+        if(e.getKeyChar() == fireWeaponKeyCode)
+            this.fireWeapon = false;
     }
 }

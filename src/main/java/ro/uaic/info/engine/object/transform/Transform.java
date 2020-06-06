@@ -6,6 +6,7 @@ import ro.uaic.info.engine.object.GameObject;
 import ro.uaic.info.engine.object.Trigger;
 import ro.uaic.info.engine.space.Double3;
 import ro.uaic.info.game.objects.player.PlayerInputListener;
+import ro.uaic.info.game.objects.weapon.projectile.Projectile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,22 @@ public class Transform {
         this.velocity = new Double3();
         this.targetVelocity = new Double3();
         this.scale = new Double3(1,1,1);
+    }
+
+    public Transform(Transform obj){
+        this.location           = new Double3(obj.location);
+        this.rotation           = new Double3(obj.rotation);
+        this.velocity           = new Double3(obj.velocity);
+        this.scale              = new Double3(obj.scale);
+        this.targetVelocity     = new Double3(obj.targetVelocity);
+        this.velocityIncrease   = new Double3(obj.velocityIncrease);
+        this.velocityDecrease   = new Double3(obj.velocityDecrease);
+        this.velocityCap        = new Double3(obj.velocityCap);
+        this.applyFriction      = obj.applyFriction;
+    }
+
+    public Transform copy(){
+        return new Transform(this);
     }
 
     public void setApplyFriction(boolean applyFriction) {
@@ -177,9 +194,9 @@ public class Transform {
 //            Double3 vCap = this.velocityCap; no need for target or capacity as friction brings the velocity to 0
 //            Double3 vTar = this.targetVelocity;
             Double3 vDec = this.velocityDecrease;
-
-            System.out.println(v);
-            System.out.println(vDec);
+//
+//            System.out.println(v);
+//            System.out.println(vDec);
 
             this.setVelocity(
                 v.getX() == 0 ? 0 : ( v.getX() > 0 ? ( v.getX() <= vDec.getX() ? 0 : v.getX() - vDec.getX() ) : ( -1 * v.getX() <= vDec.getX() ? 0 : v.getX() + vDec.getX() ) ),
@@ -217,12 +234,12 @@ public class Transform {
 
         List<GameObject> colliderObjectList = this.collisionCheck(o);
 
-        System.out.println(colliderObjectList);
+//        System.out.println(colliderObjectList);
 
         if(o.hasCollision() && !colliderObjectList.isEmpty() ){
             this.setLocation(oldLoc);
             v.setY(0.0);
-            System.out.println(this.velocity);
+//            System.out.println(this.velocity);
         }
     }
 
@@ -240,13 +257,14 @@ public class Transform {
 
         List<GameObject> colliderObjectList = this.collisionCheck(o);
 
-        System.out.println(colliderObjectList);
+//        System.out.println(colliderObjectList);
 
         if(o.hasCollision() && !colliderObjectList.isEmpty() ){
             this.setLocation(oldLoc);
             v.setX(0.0);
-            System.out.println("this is wrong");
+//            System.out.println("this is wrong");
         }
+
     }
 
     private List<GameObject> collisionCheck(GameObject o){
@@ -257,8 +275,21 @@ public class Transform {
         Engine.getInstance().getGameObjects().getAll().forEach(
             e -> {
                 if(e.hasCollision() && o != e)
-                    if(mesh.intersects(e.getMesh()))
-                        colliders.add(e);
+                    if( ! ( o.getLabel().equals(GameObject.PROJECTILE_LABEL) && o.getLabel().equals(e.getLabel()) ) )
+                        if(
+                            ! (
+                                o.getLabel().equals(GameObject.PROJECTILE_LABEL) && e.getLabel().equals(GameObject.PLAYER_LABEL) &&
+                                ( (Projectile)o ).getShooterLabel().equals(Projectile.PLAYER_SHOOTER_LABEL)
+                                ||
+                                e.getLabel().equals(GameObject.PROJECTILE_LABEL) && o.getLabel().equals(GameObject.PLAYER_LABEL) &&
+                                ( (Projectile)e ).getShooterLabel().equals(Projectile.PLAYER_SHOOTER_LABEL)
+                            )
+                        )
+                            if (mesh.intersects(e.getMesh()))
+                                colliders.add(e);
+                     //else {
+                        //if ( o.getLabel().equals(GameObject.PROJECTILE_LABEL) && e.getLabel().equals(GameObject.PLAYER_LABEL) )
+                    //}
             }
         );
 
@@ -268,7 +299,7 @@ public class Transform {
 
                     //GAME WORLD TRIGGER (to not get objects out of bounds)
                     if(e.getLabel().equals(Trigger.WORLD_EDGE))
-                        if(!mesh.intersects(e.getMesh()))
+                        if(!e.getMesh().contains(mesh))
                             colliders.add(e);
 
                     //FOREACH LABEL ADD CASE

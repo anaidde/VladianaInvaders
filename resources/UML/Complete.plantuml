@@ -388,6 +388,6 @@
   ro.uaic.info.game.objects.ship.Ship .up.|> ro.uaic.info.engine.object.GameObject
   ro.uaic.info.game.objects.ship.Ship o-- ro.uaic.info.engine.object.transform.Transform : transform
 
-  ro.uaic.info.game.objects.weapon.Gun o-- ro.uaic.info.game.objects.weapon.FiringPattern : firingPattern
+  ro.uaic.info.game.objects.weapon.Gun o-- ro.uaic.info.game.objects.weapon.pattern.FiringPattern : firingPattern
   ro.uaic.info.game.objects.weapon.Gun o-- ro.uaic.info.game.objects.weapon.projectile.ProjectileType : projectileType
 @enduml
