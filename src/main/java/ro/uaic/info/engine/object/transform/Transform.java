@@ -298,9 +298,15 @@ public class Transform {
                 if(e.hasCollision()){
 
                     //GAME WORLD TRIGGER (to not get objects out of bounds)
-                    if(e.getLabel().equals(Trigger.WORLD_EDGE))
-                        if(!e.getMesh().contains(mesh))
-                            colliders.add(e);
+                    if(e.getLabel().equals(Trigger.WORLD_EDGE)) {
+                        if(o.getLabel().equals(GameObject.PROJECTILE_LABEL)){
+                            if(!e.getMesh().intersects(mesh)){
+                                o.destroy();
+                            }
+                        } else
+                            if (!e.getMesh().contains(mesh))
+                                colliders.add(e);
+                    }
 
                     //FOREACH LABEL ADD CASE
                 }

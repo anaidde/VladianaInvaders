@@ -29,8 +29,8 @@ public class EngineTest {
 //                new Player.PlayerBuilder().withShip(a).build()
 //        );
 
-        Engine.getInstance().getGameObjects().addGameObject(Projectile.createIon(new Transform().setLocation(500, 500, 0)));
-        Engine.getInstance().getGameObjects().addGameObject(Projectile.createEnergy(new Transform().setLocation(500, 600, 0)));
+//        Engine.getInstance().getGameObjects().addGameObject(Projectile.createIon(new Transform().setLocation(500, 500, 0)));
+//        Engine.getInstance().getGameObjects().addGameObject(Projectile.createEnergy(new Transform().setLocation(500, 600, 0)));
 
         Engine.getInstance().getGameObjects().setPlayerObject(new Player.PlayerBuilder().withShip(a).build());
         Engine.getInstance().getGameObjects().addTrigger(

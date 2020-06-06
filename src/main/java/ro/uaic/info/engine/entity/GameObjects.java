@@ -66,8 +66,12 @@ public class GameObjects {
         this.gameObjects.forEach(GameObject::realUpdate);
         this.coolDownTimers.forEach(FrameTimer::tick);
 
+        this.gameObjects.removeIf(GameObject::toBeDestroyed);
+
         this.gameObjects.addAll(this.toBeAddedAfterFrame);
         this.toBeAddedAfterFrame.clear();
+
+        System.out.println(this.gameObjects.toString());
     }
 
     public void redraw(Graphics g){

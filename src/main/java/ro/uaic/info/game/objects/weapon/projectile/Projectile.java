@@ -12,12 +12,24 @@ public abstract class Projectile implements GameObject {
     protected BufferedImage sprite;
     protected Double3 movementSpeed;
 
+    private boolean toBeDestroyed = false;
+
     public static final String PLAYER_SHOOTER_LABEL = "PLAYER";
     public static final String ENEMY_SHOOTER_LABEL = "ENEMY";
 
     public static final String DEFAULT_SHOOTER_LABEL = PLAYER_SHOOTER_LABEL;
 
     private String shooterLabel = DEFAULT_SHOOTER_LABEL;
+
+    @Override
+    public void destroy() {
+        this.toBeDestroyed = true;
+    }
+
+    @Override
+    public boolean toBeDestroyed() {
+        return this.toBeDestroyed;
+    }
 
     public String getShooterLabel() {
         return shooterLabel;
