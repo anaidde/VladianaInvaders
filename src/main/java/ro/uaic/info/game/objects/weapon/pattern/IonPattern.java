@@ -16,7 +16,7 @@ import java.util.List;
 
 public class IonPattern implements FiringPattern {
 
-    public static final int PATTERN_FIRE_COOL_DOWN_FRAMES = 5;
+    public static final int PATTERN_FIRE_COOL_DOWN_FRAMES = 15;
 
     private FrameTimer coolDownTimer = new FrameTimer(PATTERN_FIRE_COOL_DOWN_FRAMES);
 
