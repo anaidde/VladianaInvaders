@@ -77,6 +77,10 @@ public interface GameObject {
         Engine.getInstance().forceDebug("destroy " + this, Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
     }
 
+    default void testFunction(){
+        System.out.println("hello");
+    }
+
     default boolean toBeDestroyed() {
         return false;
     }
@@ -115,8 +119,6 @@ public interface GameObject {
     }
 
     default Rectangle getMesh(){
-
-
         return new Rectangle(
             (int)getTransform().getLocation().getX(),
             (int)getTransform().getLocation().getY(),
