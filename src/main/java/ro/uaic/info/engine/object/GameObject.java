@@ -77,10 +77,6 @@ public interface GameObject {
         Engine.getInstance().forceDebug("destroy " + this, Debug.DebugLevel.DEBUG_LEVEL_ALL_MESSAGES);
     }
 
-    default void testFunction(){
-        System.out.println("hello");
-    }
-
     default boolean toBeDestroyed() {
         return false;
     }
